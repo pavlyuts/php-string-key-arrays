@@ -60,6 +60,65 @@ class SKArrayTest extends \PHPUnit\Framework\TestCase {
         $this->assertNull($a['Unknown'] ?? null);
     }
 
+    public function testColumnArray() {
+        $a = new SKArray();
+        $t = [
+            'r1' => ['a' => 1, 'b' => 2, 7 => 3, 'c' => 4],
+            'r2' => ['a' => 5, 'b' => 6, 7 => 7],
+            'r3' => ['a' => 9, 'b' => 10, 7 => 11, 'c' => 12],
+        ];
+        foreach ($t as $key => $val) {
+            $a[$key] = $val;
+        }
+        $a['scalar'] = 'StringValue';
+
+        $r = $a->column('a');
+        $this->assertTrue($r instanceof SKArray);
+        $this->assertEquals(array_keys($t), $r->array_keys());
+        $this->assertEquals(array_column($t, 'a'), $r->array_values());
+
+        $r = $a->column(7);
+        $this->assertTrue($r instanceof SKArray);
+        $this->assertEquals(array_keys($t), $r->array_keys());
+        $this->assertEquals(array_column($t, 7), $r->array_values());
+
+        $r = $a->column('c');
+        $this->assertTrue($r instanceof SKArray);
+        $this->assertEquals(['r1', 'r3'], $r->array_keys());
+        $this->assertEquals([4, 12], $r->array_values());
+
+        $r = $a->column('d');
+        $this->assertTrue($r instanceof SKArray);
+        $this->assertEquals(0, count($r));
+    }
+
+    public function testColumnObjcts() {
+        $a = new SKArray();
+        $a['E1'] = new Elem('VE1');
+        $a['EP1'] = new ElemProp('VEP1');
+        $a['EM1'] = new ElemMethod('VEM1');
+        $a['E2'] = new Elem('VE2');
+        $a['EP2'] = new ElemProp('VEP2');
+        $a['EM2'] = new ElemMethod('VEM2');
+
+        $r = $a->column('prop');
+        $this->assertEquals(['EP1', 'EP2'], $r->array_keys());
+        $this->assertEquals(['VEP1', 'VEP2'], $r->array_values());
+
+        $r = $a->column('method');
+        $this->assertEquals(['EM1', 'EM2'], $r->array_keys());
+        $this->assertEquals(['VEM1', 'VEM2'], $r->array_values());
+
+        $r = $a->column('proMethod');
+        
+        $r = $a->column('process', 'reverse');
+        $this->assertEquals(['1MEV', '2MEV'], $r->array_values());
+
+        $r = $a->column('process', 'add', 'bis');
+        $this->assertEquals(['VEM1bis', 'VEM2bis'], $r->array_values());
+        
+    }
+
     public function testException_1() {
         $a = new SKArray();
         $this->expectException(SKArrayException::class);

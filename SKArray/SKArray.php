@@ -119,6 +119,60 @@ class SKArray implements \Iterator, \ArrayAccess, \Countable {
         return array_values($this->list);
     }
 
+    /**
+     * About the same like array_column but... a bit different!
+     * 
+     * If an element is an array, it will try to retrive array value by key $column.
+     * 
+     * If an element is_object and property $column exist, it will try to get it
+     * 
+     * If an element is_object and method $column exist, it will try to call it 
+     * unpacking $args, like $element->$column(...$args);
+     * 
+     * @param mixed $column array key, property or methid name
+     * @param mixed multiple $args
+     * @return SKArray of results of successful calll with same keys
+     */
+    public function column($column, ...$args): SKArray {
+        $result = $this->createSelf();
+        foreach ($this->list as $key => $element) {
+            if (null !== ($answer = $this->getElementColumn($element, $column, $args))) {
+                $result[$this->decodeOffset($key)] = $answer;
+            }
+        }
+        return $result;
+    }
+
+    protected function getElementColumn($element, $column, $args) {
+        if (is_array($element)) {
+            return $element[$column] ?? null;
+        }
+        if (is_object($element) && is_string($column)) {
+            return $this->getFromObject($element, $column, $args);
+        }
+        return null;
+    }
+
+    protected function getFromObject($element, $column, $args) {
+        try {
+            if (property_exists($element, $column)) {
+                return $element->$column;
+            }
+            if (method_exists($element, $column)) {
+                return $element->$column(...$args);
+            }
+        } catch (\Error $ex) {
+            $className = get_class($element);
+            trigger_error("SKArray: When access propery or method '$column' of elment class '$className' got error'{$ex->getMessage()}'", E_USER_NOTICE);
+            return null;
+        }
+    }
+
+    protected function createSelf() {
+        $cl = static::class;
+        return new $cl($this->strict);
+    }
+
     protected function encodeOffset($offset) {
         if (!(is_string($offset) || is_int($offset) || is_float($offset))) {
             throw new SKArrayException("Only string, int and float types allowed as a key");

@@ -85,7 +85,18 @@ $a['Level1']['Level2'] = 'data';
 Call of `$stringKeyArray->keys()` or it's synonym `array_keys()` returns keys as array of strings, same as PHP analogue.
 ### `values()` aka `array_values()`
 Call of `$stringKeyArray->values()` or it's synonym `array_values()` returns values as array of mixed, same as PHP analuue.
+### `column()`
+ About the same like array_column but... a bit different!
+```
+public function column($column, ...$args): SKArray
+```
+it always returm SKArray class, containing the same string keys and result for each element's 'column' as:
+- If the element is an array, it will try to retrive array value by key $column
+- If the element is an object, then:
+  - if property named $column exist, it will try to read it.
+  - elseif method $column exist, it will try to call it unpacking all the next $args, like $element->$column(...$args)
 
+The returned dataset will only include keys and values successfully retrieved, no nulls no errors. Any error accessing objects properties converted to HPH notice. 
 ## Testing
 Was tested with PHPUnit under PHP 7.2. The cod is very simple so expected to work 7.x and up.
 
