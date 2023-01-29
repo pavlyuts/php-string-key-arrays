@@ -40,7 +40,7 @@ class SKArray implements \Iterator, \ArrayAccess, \Countable {
         if ($this->strict) {
             throw new SKArrayException("Got undefined index '$offset'");
         }
-        trigger_error("SKArray got undefined index '$offset'", E_USER_NOTICE);
+        trigger_error("SKArray: Got undefined index '$offset'", E_USER_NOTICE);
         return null;
     }
 
