@@ -29,12 +29,13 @@ class SKArray implements \Iterator, \ArrayAccess, \Countable {
     }
 
     public function offsetExists($offset): bool {
-        return array_key_exists('S' . $offset, $this->list);
+        return array_key_exists($this->encodeOffset($offset), $this->list);
     }
 
     public function offsetGet($offset) {
-        if (array_key_exists('S' . $offset, $this->list)) {
-            return $this->list['S' . $offset];
+        $realOffset = $this->encodeOffset($offset);
+        if (array_key_exists($realOffset, $this->list)) {
+            return $this->list[$realOffset];
         }
         if ($this->strict) {
             throw new SKArrayException("Got undefined index '$offset'");
@@ -44,14 +45,11 @@ class SKArray implements \Iterator, \ArrayAccess, \Countable {
     }
 
     public function offsetSet($offset, $value): void {
-        if ((null === $offset) || '' === $offset) {
-            throw new SKArrayException("Use null or empty string as a key is prohibited");
-        }
-        $this->list['S' . $offset] = $value;
+        $this->list[$this->encodeOffset($offset)] = $value;
     }
 
     public function offsetUnset($offset): void {
-        unset($this->list['S' . $offset]);
+        unset($this->list[$this->encodeOffset($offset)]);
     }
 
     public function count(): int {
@@ -63,7 +61,7 @@ class SKArray implements \Iterator, \ArrayAccess, \Countable {
     }
 
     public function key() {
-        return substr($this->indexArray[$this->index], 1);
+        return $this->decodeOffset($this->indexArray[$this->index]);
     }
 
     public function next(): void {
@@ -77,6 +75,20 @@ class SKArray implements \Iterator, \ArrayAccess, \Countable {
 
     public function valid(): bool {
         return isset($this->indexArray[$this->index]) && isset($this->list[$this->indexArray[$this->index]]);
+    }
+
+    protected function encodeOffset($offset) {
+        if (!(is_string($offset) || is_int($offset) || is_float($offset))) {
+            throw new SKArrayException("Only string, int and float types allowed as a key");
+        }
+        if (is_null($offset) || '' === $offset) {
+            throw new SKArrayException("Use null or empty string as a key is prohibited");
+        }
+        return 'S' . $offset;
+    }
+
+    protected function decodeOffset($offset) {
+        return substr($offset, 1);
     }
 
 }
