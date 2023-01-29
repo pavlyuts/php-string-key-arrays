@@ -17,7 +17,9 @@ I do not think there be a version compatibility problem as it is too simple thin
 ### Basics
 Basic use about the same as array but **with some limitations described below**.
 
-Some examples
+Some [useful functions](#useful-functions) also available in the section below
+
+Examples
 ```
 <?php
 
@@ -68,7 +70,9 @@ try {
 $arr2 = new SKArray(false);
 $var = $arr2['Unknow'];
 
+
 //This will throw `SKArrayException` as the key is not known
+$a = new SKArray();
 $a['Level1']['Level2'] = 'data';
 
 //This will NOT throw exception, but also it will not change contained array element
@@ -76,6 +80,11 @@ $a['Level1'] = [];
 $a['Level1']['Level2'] = 'data';
 // Result: $a['Level1'] == [], element not modified, PHP notice generated
 ```
+## Useful functions
+### `keys()` aka `array_keys()`
+Call of `$stringKeyArray->keys()` or it's synonym `array_keys()` returns keys as array of strings, same as PHP analogue.
+### `values()` aka `array_values()`
+Call of `$stringKeyArray->values()` or it's synonym `array_values()` returns values as array of mixed, same as PHP analuue.
 
 ## Testing
 Was tested with PHPUnit under PHP 7.2. The cod is very simple so expected to work 7.x and up.
