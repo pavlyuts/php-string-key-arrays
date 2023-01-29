@@ -1,0 +1,30 @@
+{
+    "name": "pavlyuts/php-string-key-arrays",
+    "description": "Array-like class with only strings used as keys",
+    "type": "library",
+    "license": "GPL-2.0-or-later",
+    "keywords": ["php", "array", "string", "key"],
+    "require-dev": {
+        "phpunit/phpunit": "*"
+    },
+    "authors": [
+        {
+            "name": "Alexey Pavlyuts",
+            "email": "alexey@pavlyuts.ru",
+            "homepage": "https://pavlyuts.ru"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "SKArray\\": "SKArray"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "SKArrayTests\\": "Tests"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit --configuration Tests/configuration.xml Tests --coverage-text"
+    }
+}
