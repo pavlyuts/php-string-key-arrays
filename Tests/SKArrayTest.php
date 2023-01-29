@@ -72,12 +72,12 @@ class SKArrayTest extends \PHPUnit\Framework\TestCase {
     public function testException_3() {
         $a = new SKArray();
         $this->expectException(SKArrayException::class);
-        $a['value'];
+        $a['BadIndex'];
     }
 
     public function testNotice() {
         $a = new SKArray(false);
-        $this->assertNull($a['value']);
+        $this->assertNull($a['BadIndex']);
     }
 
 }
