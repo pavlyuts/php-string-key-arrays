@@ -107,7 +107,7 @@ class SKArray implements \Iterator, \ArrayAccess, \Countable {
      * @return array - all values, array of mixed
      */
     public function array_values(): array {
-        $this->values();
+        return $this->values();
     }
 
     /**
