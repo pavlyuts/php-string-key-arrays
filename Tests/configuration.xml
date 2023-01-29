@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<phpunit colors="false" 
+         convertNoticesToExceptions="false"
+>
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">../SKarray</directory>
+        </whitelist>
+    </filter>
+</phpunit>
