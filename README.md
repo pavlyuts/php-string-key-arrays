@@ -14,9 +14,8 @@ In the Composer storage. Just add proper require section:
 I do not think there be a version compatibility problem as it is too simple thing and expected to be stable
 
 ## Use
-Create the instance and use it as usual array with some issues:
-- It will throw `SKArrayException` if you try to use null or empty string as a key. This mean `$stringKeyArray[] = 'value';` is illegal
-- By default it also will throw `SKArrayException` if you try to read unknown key. Use `$a = new SKArray(false)` to change behaviour from exception to PHP notice and return null. Or, even better, use `$var = $stringKeyArray[] ?? null;` - this works fine.
+### Basics
+Basic use about the same as array but **with some limitations described below**.
 
 Some examples
 ```
@@ -35,13 +34,28 @@ $arr['123'] = 'ValueString123';
 // This will REWRITE last one becuse int key 123 becomes string key '123'!
 $arr[123] = 'ValueInt123';
 
-//this will work fine
+//this will work
 foreach ($arr as $key => $val) {
     echo "$key: $val\n";
 }
+```
+### Limitations
+- It will throw `SKArrayException` if you try to use null or empty string as a key. This mean `$stringKeyArray[] = 'value';` is illegal
+- By default it also will throw `SKArrayException` if you try to read an unknown key. Use `$a = new SKArray(false)` to change behaviour from exception to PHP notice and return null. Or, even better, use `$var = $stringKeyArray[] ?? null;` - this works fine.
+- Indirect midification like `$stringKeyArray['Level1Key']['Level2key'] = 'value';` will not work:
+  - Will throw Exception/Notice for unknown key if the first key is not exist
+  - If the key exist - no error **but also no effect and PHP notice**. Data will not change.
+
+```
+<?php
+
+use SKArray\SKArray;
+use SKArray\SKArrayException;
+
+$arr =  new SKArray();
 
 //This will work fine
-$var = $arr['Unknownn'] ?? null;
+$var = $arr['UnknownnKey'] ?? null;
 
 //This will throw exception
 try {
@@ -53,6 +67,14 @@ try {
 //This will not throw, only PHP notice and null return
 $arr2 = new SKArray(false);
 $var = $arr2['Unknow'];
+
+//This will throw `SKArrayException` as the key is not known
+$a['Level1']['Level2'] = 'data';
+
+//This will NOT throw exception, but also it will not change contained array element
+$a['Level1'] = [];
+$a['Level1']['Level2'] = 'data';
+// Result: $a['Level1'] == [], element not modified, PHP notice generated
 ```
 
 ## Testing
