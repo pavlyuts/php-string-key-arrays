@@ -77,6 +77,48 @@ class SKArray implements \Iterator, \ArrayAccess, \Countable {
         return isset($this->indexArray[$this->index]) && isset($this->list[$this->indexArray[$this->index]]);
     }
 
+    /**
+     * Synonym for $this->keys();
+     * Same as array_keys(), return all the keys in a list
+     * 
+     * @return array - all keys, array of string
+     */
+    public function array_keys(): array {
+        return $this->keys();
+    }
+
+    /**
+     * Same as array_keys(), return all the keys in a list
+     * 
+     * @return array - all keys, array of string
+     */
+    public function keys(): array {
+        $result = [];
+        foreach (array_keys($this->list) as $key) {
+            $result[] = $this->decodeOffset($key);
+        }
+        return $result;
+    }
+
+    /**
+     * Synonym for $this->values();
+     * same as array_values(), return all values in a list
+     * 
+     * @return array - all values, array of mixed
+     */
+    public function array_values(): array {
+        $this->values();
+    }
+
+    /**
+     * same as array_values(), return all values in a list
+     * 
+     * @return array - all values, array of mixed
+     */
+    public function values(): array {
+        return array_values($this->list);
+    }
+
     protected function encodeOffset($offset) {
         if (!(is_string($offset) || is_int($offset) || is_float($offset))) {
             throw new SKArrayException("Only string, int and float types allowed as a key");

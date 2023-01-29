@@ -38,6 +38,9 @@ class SKArrayTest extends \PHPUnit\Framework\TestCase {
             $this->assertEquals($val, $test[$i++]['val']);
         }
 
+        $this->assertEquals(['586', 'aaa', '777', '5.15', 'bbb'], $a->array_keys());
+        $this->assertEquals(['Number', 'Text', 'NumberString', 'Float', 'MoreText'], $a->array_values());
+
         unset($a[777]);
         $this->assertEquals(4, count($a));
 
@@ -53,7 +56,7 @@ class SKArrayTest extends \PHPUnit\Framework\TestCase {
 
         $this->assertTrue(isset($a['789']));
         $this->assertFalse(isset($a['Unknown']));
-        
+
         $this->assertNull($a['Unknown'] ?? null);
     }
 
