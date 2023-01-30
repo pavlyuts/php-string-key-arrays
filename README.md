@@ -98,6 +98,6 @@ it always returm SKArray class, containing the same string keys and result for e
 
 The returned dataset will only include keys and values successfully retrieved, no nulls no errors. Any error accessing objects properties converted to HPH notice. 
 ## Testing
-Was tested with PHPUnit under PHP 7.2. The cod is very simple so expected to work 7.x and up.
+Was tested with PHPUnit under PHP 7.2. The code is very simple so expected to work 7.x and up.
 
-If you have doubts about your eenvironment, install it with `--dev` composer optiion and then run `composer test` from library source root.
+If you have doubts about your environment, install it with `--dev` composer optiion and then run `composer test` from library source root.
