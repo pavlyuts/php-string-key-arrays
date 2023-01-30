@@ -96,7 +96,8 @@ it always returm SKArray class, containing the same string keys and result for e
   - if property named $column exist, it will try to read it.
   - elseif method $column exist, it will try to call it unpacking all the next $args, like $element->$column(...$args)
 
-The returned dataset will only include keys and values successfully retrieved, no nulls no errors. Any error accessing objects properties converted to HPH notice. 
+The returned dataset will only include keys and values successfully retrieved, no nulls, no errors. If yo try to access protected method or property it will be silently passed without returning any result or any kind of problem indication. 
+
 ### `setSubarrayItem()`
 Helper to work with SKArray elements type of array, do the same as illegal operaton `$stringKeyArray['Level1Key']['Level2key'] = 'value'`
 ```

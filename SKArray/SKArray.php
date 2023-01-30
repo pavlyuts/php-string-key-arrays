@@ -185,18 +185,16 @@ class SKArray implements \Iterator, \ArrayAccess, \Countable {
     }
 
     protected function getFromObject($element, $column, $args) {
-        try {
-            if (property_exists($element, $column)) {
-                return $element->$column;
-            }
-            if (method_exists($element, $column)) {
-                return $element->$column(...$args);
-            }
-        } catch (\Error $ex) {
-            $className = get_class($element);
-            trigger_error("SKArray: When access propery or method '$column' of elment class '$className' got error'{$ex->getMessage()}'", E_USER_NOTICE);
-            return null;
+        if (property_exists($element, $column)) {
+            return $element->$column ?? null;
         }
+        if (method_exists($element, $column)) {
+            try {
+                return $element->$column(...$args);
+            } catch (\Error $ex) {//
+            }
+        }
+        return null;
     }
 
     protected function createSelf() {
