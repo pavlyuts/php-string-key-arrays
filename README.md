@@ -11,7 +11,7 @@ In the Composer storage. Just add proper require section:
         "pavlyuts/php-string-key-arrays": "*"
     }
     
-I do not think there be a version compatibility problem as it is too simple thing and expected to be stable
+I do not think there be a version compatibility problem as it is too simple thing and expected to be stable. However, I recommend to inspect [CHANGELOG.md](https://github.com/pavlyuts/php-string-key-arrays/blob/main/CHANGELOG.md) for changes.
 
 ## Use
 ### Basics
