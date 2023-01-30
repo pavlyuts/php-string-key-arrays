@@ -153,6 +153,9 @@ class SKArrayTest extends \PHPUnit\Framework\TestCase {
 
     public function testNotice() {
         $a = new SKArray(false);
+        $this->assertNull(@$a['BadIndex']);
+        $this->expectNotice();
+        $this->expectNoticeMessage('BadIndex');
         $this->assertNull($a['BadIndex']);
     }
 
