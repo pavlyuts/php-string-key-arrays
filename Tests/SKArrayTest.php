@@ -92,6 +92,21 @@ class SKArrayTest extends \PHPUnit\Framework\TestCase {
         $this->assertEquals(0, count($r));
     }
 
+    public function testSetSubarrayItem() {
+        $a = new SKArray();
+        $a->setSubarrayItem('test1', 'test1Value');
+        $this->assertEquals(['test1Value'], $a['test1']);
+        $a->setSubarrayItem('test1', 'test2Value');
+        $this->assertEquals(['test1Value', 'test2Value'], $a['test1']);
+        $a->setSubarrayItem('test1', 'test3Value', 'test3Key');
+        $this->assertEquals(['test1Value', 'test2Value', 'test3Key' => 'test3Value'], $a['test1']);
+
+        $a['test2'] = 'TestStringValue';
+        $this->assertEquals('TestStringValue', $a['test2']);
+        $a->setSubarrayItem('test2', 'test2Value');
+        $this->assertEquals(['test2Value'], $a['test2']);
+    }
+
     public function testColumnObjcts() {
         $a = new SKArray();
         $a['E1'] = new Elem('VE1');
@@ -110,13 +125,12 @@ class SKArrayTest extends \PHPUnit\Framework\TestCase {
         $this->assertEquals(['VEM1', 'VEM2'], $r->array_values());
 
         $r = $a->column('proMethod');
-        
+
         $r = $a->column('process', 'reverse');
         $this->assertEquals(['1MEV', '2MEV'], $r->array_values());
 
         $r = $a->column('process', 'add', 'bis');
         $this->assertEquals(['VEM1bis', 'VEM2bis'], $r->array_values());
-        
     }
 
     public function testException_1() {

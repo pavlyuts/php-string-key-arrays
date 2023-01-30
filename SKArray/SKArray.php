@@ -120,6 +120,28 @@ class SKArray implements \Iterator, \ArrayAccess, \Countable {
     }
 
     /**
+     * Add a $key=>$value to an array, stored inside with key $offset
+     * 
+     * If element is not exist it will create array and add element. 
+     * Behaviour is about the same as $arr[$offset][$key] = $value, but when 
+     * the key is null it use [].
+     * 
+     * If element is not an array it overwrites.
+     * 
+     * @param type $offset 
+     * @param type $value
+     * @param type $key
+     */
+    public function setSubarrayItem($offset, $value, $key = null) {
+        $realOffset = $this->encodeOffset($offset);
+        if (key_exists($realOffset, $this->list) && is_array($this->list[$realOffset])) {
+            $this->list[$realOffset] = $this->addArrayItem($this->list[$realOffset], $value, $key);
+        } else {
+            $this->list[$realOffset] = $this->addArrayItem([], $value, $key);
+        }
+    }
+
+    /**
      * About the same like array_column but... a bit different!
      * 
      * If an element is an array, it will try to retrive array value by key $column.
@@ -141,6 +163,15 @@ class SKArray implements \Iterator, \ArrayAccess, \Countable {
             }
         }
         return $result;
+    }
+
+    protected function addArrayItem(array $arr, $value, $key) {
+        if (is_null($key)) {
+            $arr[] = $value;
+        } else {
+            $arr[$key] = $value;
+        }
+        return $arr;
     }
 
     protected function getElementColumn($element, $column, $args) {

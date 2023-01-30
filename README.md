@@ -97,6 +97,22 @@ it always returm SKArray class, containing the same string keys and result for e
   - elseif method $column exist, it will try to call it unpacking all the next $args, like $element->$column(...$args)
 
 The returned dataset will only include keys and values successfully retrieved, no nulls no errors. Any error accessing objects properties converted to HPH notice. 
+### `setSubarrayItem()`
+Helper to work with SKArray elements type of array, do the same as illegal operaton `$stringKeyArray['Level1Key']['Level2key'] = 'value'`
+```
+public function setSubarrayItem($offset, $value, $key = null)
+```
+If the element of SKArray collection at `$offset` is not an array or does not exist it will overwrite/create it as an empty array.
+Then, it will add to array, if key is given, it will add with `$key`, if null or missed - add as []
+```
+$arr = new SKArray();
+
+//Equivalent of illegal $arr['level1Key'][] = 'value'
+$arr->setSubarrayItem('level1Key', 'value');
+
+//Equivalent of illegal $arr['level1Key']['level2Key'] = 'value'
+$arr->setSubarrayItem('level1Key', 'value', 'level2Key');
+``` 
 ## Testing
 Was tested with PHPUnit under PHP 7.2. The code is very simple so expected to work 7.x and up.
 
