@@ -133,6 +133,15 @@ class SKArrayTest extends \PHPUnit\Framework\TestCase {
         $this->assertEquals(['VEM1bis', 'VEM2bis'], $r->array_values());
     }
 
+    public function testMerge() {
+        $a = new SKArray();
+        $a['one'] = 'DataOne';
+        $a['two'] = 'DataTwo';
+        $a->merge(['two' => 'DataTwoReplace', 'three' => 'DataThree']);
+        $this->assertEquals(['one', 'two', 'three'], $a->keys());
+        $this->assertEquals(['DataOne', 'DataTwoReplace', 'DataThree'], $a->values());
+    }
+
     public function testException_1() {
         $a = new SKArray();
         $this->expectException(SKArrayException::class);

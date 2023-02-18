@@ -85,6 +85,8 @@ $a['Level1']['Level2'] = 'data';
 Call of `$stringKeyArray->keys()` or it's synonym `array_keys()` returns keys as array of strings, same as PHP analogue.
 ### `values()` aka `array_values()`
 Call of `$stringKeyArray->values()` or it's synonym `array_values()` returns values as array of mixed, same as PHP analuue.
+### `merge()`
+Merges another iterable into SKArray about the same way as array_merge(), but all kays handled as string type
 ### `column()`
  About the same like array_column but... a bit different!
 ```
@@ -115,6 +117,6 @@ $arr->setSubarrayItem('level1Key', 'value');
 $arr->setSubarrayItem('level1Key', 'value', 'level2Key');
 ``` 
 ## Testing
-Was tested with PHPUnit under PHP 7.2. The code is very simple so expected to work 7.x and up.
+Was tested with PHPUnit 8.5 under PHP 7.2. The code is very simple so expected to work 7.x and up.
 
 If you have doubts about your environment, install it with `--dev` composer optiion and then run `composer test` from library source root.

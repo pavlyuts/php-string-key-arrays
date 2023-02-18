@@ -164,6 +164,21 @@ class SKArray implements \Iterator, \ArrayAccess, \Countable {
         }
         return $result;
     }
+    
+    /**
+     * Merges another SKArray or simple array or any other iterable into current 
+     * instance about the same way as array_merge(). 
+     * 
+     * The difference is all keys handled as string, so the same int-like keys 
+     * will overwrite instead of add another.
+     * 
+     * @param  iterable $arr - to be merged into
+     */
+    public function merge(iterable $arr) {
+        foreach($arr as $key => $val) {
+            $this[$key] = $val;
+        }
+    }
 
     protected function addArrayItem(array $arr, $value, $key) {
         if (is_null($key)) {
