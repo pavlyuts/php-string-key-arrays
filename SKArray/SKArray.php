@@ -156,7 +156,7 @@ class SKArray implements \Iterator, \ArrayAccess, \Countable {
      * @return SKArray of results of successful calll with same keys
      */
     public function column($column, ...$args): SKArray {
-        $result = $this->createSelf();
+        $result = new SKArray($this->strict);
         foreach ($this->list as $key => $element) {
             if (null !== ($answer = $this->getElementColumn($element, $column, $args))) {
                 $result[$this->decodeOffset($key)] = $answer;
@@ -195,11 +195,6 @@ class SKArray implements \Iterator, \ArrayAccess, \Countable {
             }
         }
         return null;
-    }
-
-    protected function createSelf() {
-        $cl = static::class;
-        return new $cl($this->strict);
     }
 
     protected function encodeOffset($offset) {
